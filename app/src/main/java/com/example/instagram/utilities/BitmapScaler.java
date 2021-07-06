@@ -1,4 +1,4 @@
-package com.example.instagram;
+package com.example.instagram.utilities;
 
 import android.graphics.Bitmap;
 

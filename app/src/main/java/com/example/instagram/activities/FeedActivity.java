@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.example.instagram.adapters.PostAdapter;
+import com.example.instagram.adapters.PostsAdapter;
 import com.example.instagram.databinding.ActivityFeedBinding;
 import com.example.instagram.models.Post;
 import com.parse.FindCallback;
@@ -23,7 +23,7 @@ public class FeedActivity extends AppCompatActivity {
     private static final String TAG = "FeedActivity";
     ActivityFeedBinding binding;
     List<Post> posts;
-    PostAdapter adapter;
+    PostsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class FeedActivity extends AppCompatActivity {
         setContentView(view);
 
         posts = new ArrayList<>();
-        adapter = new PostAdapter(this, posts);
+        adapter = new PostsAdapter(this, posts);
 
         binding.rvPosts.setAdapter(adapter);
         binding.rvPosts.setLayoutManager(new LinearLayoutManager(this));
