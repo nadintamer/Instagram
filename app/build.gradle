@@ -43,4 +43,11 @@ dependencies {
 
     // Parse for backend
     implementation 'com.github.parse-community.Parse-SDK-Android:parse:1.24.1'
+
+    // Recycler view for posts
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+
+    // Glide for images
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 }

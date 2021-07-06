@@ -20,13 +20,10 @@ import android.widget.Toast;
 
 import com.example.instagram.BitmapScaler;
 import com.example.instagram.R;
-import com.example.instagram.databinding.ActivityLoginBinding;
 import com.example.instagram.databinding.ActivityMainBinding;
 import com.example.instagram.models.Post;
-import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -34,7 +31,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle("");
 
-        // queryPosts();
         binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +76,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 launchCamera();
+            }
+        });
+
+        binding.btnFeed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, FeedActivity.class);
+                startActivity(i);
             }
         });
     }
@@ -180,27 +183,6 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
         finish();
-    }
-
-    private void queryPosts() {
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> posts, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error getting posts", e);
-                    return;
-                }
-
-                for (Post post : posts) {
-                    try {
-                        Log.i(TAG, "Post: " + post.getDescription() + ", username: " + post.getUser().fetchIfNeeded().getUsername());
-                    } catch (ParseException parseException) {
-                        parseException.printStackTrace();
-                    }
-                }
-            }
-        });
     }
 
     @Override
