@@ -39,7 +39,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
+    public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 42;
+    public static final int MAX_IMAGE_WIDTH = 300;
 
     private ActivityMainBinding binding;
     private File photoFile;
@@ -148,7 +149,24 @@ public class MainActivity extends AppCompatActivity {
                 // by this point we have the camera photo on disk
                 Bitmap rawTakenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
                 // RESIZE BITMAP, see section below
-                Bitmap resizedBitmap = BitmapScaler.scaleToFitWidth(rawTakenImage, 400);
+                Bitmap resizedBitmap = BitmapScaler.scaleToFitWidth(rawTakenImage, MAX_IMAGE_WIDTH);
+
+                // Configure byte output stream
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                // Compress the image further
+                resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+                // Create a new file for the resized bitmap (`getPhotoFileUri` defined above)
+                File resizedFile = getPhotoFileUri(photoFileName);
+                try {
+                    resizedFile.createNewFile();
+                    FileOutputStream fos = new FileOutputStream(resizedFile);
+                    // Write the bytes of the bitmap to file
+                    fos.write(bytes.toByteArray());
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 // Load the taken image into a preview
                 ImageView ivPreview = (ImageView) findViewById(R.id.ivPhoto);
                 ivPreview.setImageBitmap(resizedBitmap);
