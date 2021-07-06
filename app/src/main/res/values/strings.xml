@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Instagram</string>
+    <string name="logout_label">Log out</string>
 </resources>

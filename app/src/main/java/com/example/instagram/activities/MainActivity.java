@@ -23,6 +23,10 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        // set up toolbar
+        setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setTitle("");
     }
 
     private void goLoginActivity() {
