@@ -2,6 +2,7 @@ package com.example.instagram.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +37,19 @@ public class FeedActivity extends AppCompatActivity {
 
         binding.rvPosts.setAdapter(adapter);
         binding.rvPosts.setLayoutManager(new LinearLayoutManager(this));
+        
+        // Setup refresh listener which triggers new data loading
+        binding.swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                queryPosts();
+            }
+        });
+        // Configure the refreshing colors
+        binding.swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         queryPosts();
     }
@@ -65,7 +79,9 @@ public class FeedActivity extends AppCompatActivity {
                 }
 
                 // save received posts to list and notify adapter of new data
+                adapter.clear();
                 adapter.addAll(posts);
+                binding.swipeContainer.setRefreshing(false);
             }
         });
     }
