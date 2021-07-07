@@ -76,6 +76,8 @@ public class ProfileFragment extends Fragment {
     private void queryPosts() {
         // specify what type of data we want to query - Post.class
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        // get only currently logged in user's posts
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
         // include data referred by user key
         query.include(Post.KEY_USER);
         // limit query to latest 20 items
