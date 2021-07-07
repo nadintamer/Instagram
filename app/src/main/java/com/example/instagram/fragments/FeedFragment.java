@@ -1,5 +1,7 @@
 package com.example.instagram.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -47,7 +49,7 @@ public class FeedFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         posts = new ArrayList<>();
-        adapter = new PostsAdapter(getActivity(), posts, true);
+        adapter = new PostsAdapter(this, posts, true);
 
         binding.rvPosts.setAdapter(adapter);
         binding.rvPosts.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -98,5 +100,47 @@ public class FeedFragment extends Fragment {
                 binding.swipeContainer.setRefreshing(false);
             }
         });
+    }
+
+    private void querySinglePost(String id, int position) {
+        // specify what type of data we want to query - Post.class
+        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        // include data referred by user key
+        query.include(Post.KEY_USER);
+        query.whereEqualTo("objectId", id);
+        // limit query to latest 20 items
+        query.setLimit(20);
+        // order posts by creation date (newest first)
+        query.addDescendingOrder("createdAt");
+        // start an asynchronous call for posts
+        query.findInBackground(new FindCallback<Post>() {
+            @Override
+            public void done(List<Post> posts, ParseException e) {
+                // check for errors
+                if (e != null) {
+                    Log.e(TAG, "Issue with getting posts", e);
+                    return;
+                }
+
+                // for debugging purposes let's print every post description to logcat
+                for (Post post : posts) {
+                    Log.i(TAG, "Post: " + post.getDescription() + ", username: " + post.getUser().getUsername());
+                }
+
+                // save received posts to list and notify adapter of new data
+                adapter.set(position, posts.get(0));
+                binding.swipeContainer.setRefreshing(false);
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 10 && resultCode == Activity.RESULT_OK) {
+            String id = data.getStringExtra("postId");
+            int position = data.getExtras().getInt("position");
+            querySinglePost(id, position);
+        }
     }
 }

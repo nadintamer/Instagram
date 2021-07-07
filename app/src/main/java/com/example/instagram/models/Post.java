@@ -1,21 +1,26 @@
 package com.example.instagram.models;
 
+import android.util.Log;
+
 import com.parse.Parse;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
 @ParseClassName("Post")
 public class Post extends ParseObject {
 
+    private static final String TAG = "Post";
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_IMAGE = "image";
     public static final String KEY_USER = "user";
     public static final String KEY_COMMENTS = "comments";
-    private static final String KEY_LIKES = "numLikes";
+    private static final String KEY_LIKES = "likers";
 
     public String getDescription() {
         return getString(KEY_DESCRIPTION);
@@ -42,21 +47,33 @@ public class Post extends ParseObject {
     }
 
     public int getNumLikes() {
-        return getInt(KEY_LIKES);
+        return getList(KEY_LIKES).size();
     }
 
-    public void setNumLikes(int likes) {
-        put(KEY_LIKES, likes);
+    public List<String> getLikers() {
+        return getList(KEY_LIKES);
     }
 
-    public void addLike() {
-        int numLikes = getNumLikes();
-        setNumLikes(numLikes + 1);
+    public void setLikers(List<String> users) {
+        put(KEY_LIKES, users);
+        saveInBackground();
     }
 
-    public void removeLike() {
-        int numLikes = getNumLikes();
-        setNumLikes(numLikes - 1);
+    public void addLike(ParseUser user) {
+        List<String> likers = getLikers();
+        likers.add(user.getObjectId());
+        setLikers(likers);
+    }
+
+    public void removeLike(ParseUser user) {
+        List<String> likers = getLikers();
+        likers.remove(user.getObjectId());
+        setLikers(likers);
+    }
+
+    public Boolean isLikedBy(ParseUser user) {
+        List<String> likers = getLikers();
+        return likers.contains(user.getObjectId());
     }
 
     public List<String> getComments() {

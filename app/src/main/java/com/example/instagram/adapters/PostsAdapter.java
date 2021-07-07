@@ -34,12 +34,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
     private static final int POST_GRID = 321;
     private static final String TAG = "PostsAdapter";
 
-    Context context;
+    Fragment fragment;
     List<Post> posts;
     Boolean isFeed;
 
-    public PostsAdapter(Context context, List<Post> posts, Boolean isFeed) {
-        this.context = context;
+    public PostsAdapter(Fragment fragment, List<Post> posts, Boolean isFeed) {
+        this.fragment = fragment;
         this.posts = posts;
         this.isFeed = isFeed;
     }
@@ -48,10 +48,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
     @Override
     public PostsAdapter.PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == POST_FEED) {
-            ItemPostFeedBinding binding = ItemPostFeedBinding.inflate(LayoutInflater.from(context), parent, false);
+            ItemPostFeedBinding binding = ItemPostFeedBinding.inflate(LayoutInflater.from(fragment.getActivity()), parent, false);
             return new PostFeedViewHolder(binding);
         } else if (viewType == POST_GRID) {
-            ItemPostGridBinding binding = ItemPostGridBinding.inflate(LayoutInflater.from(context), parent, false);
+            ItemPostGridBinding binding = ItemPostGridBinding.inflate(LayoutInflater.from(fragment.getActivity()), parent, false);
             return new PostGridViewHolder(binding);
         } else {
             throw new IllegalArgumentException("Unknown view type");
@@ -88,6 +88,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
         notifyDataSetChanged();
     }
 
+    public void set(int position, Post post) {
+        posts.set(position, post);
+        notifyItemChanged(position);
+    }
+
     public abstract class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public PostViewHolder(@NonNull View itemView) {
@@ -101,9 +106,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 Post post = posts.get(position);
-                Intent i = new Intent(context, PostDetailActivity.class);
+                Intent i = new Intent(fragment.getActivity(), PostDetailActivity.class);
                 i.putExtra("post", post);
-                context.startActivity(i);
+                i.putExtra("position", position);
+                fragment.startActivityForResult(i, 10);
             }
         }
     }
@@ -123,7 +129,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
             binding.tvDescription.setText(post.getDescription());
             ParseFile imageFile = post.getImage();
             if (imageFile != null) {
-                Glide.with(context)
+                Glide.with(fragment.getActivity())
                         .load(imageFile.getUrl())
                         .fitCenter()
                         .into(binding.ivPhoto);
@@ -139,7 +145,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
                             Log.e(TAG, "Error querying user", e);
                             return;
                         }
-                        final FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+                        final FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
                         final Fragment profileFragment = ProfileFragment.newInstance(objects.get(0));
 
                         fragmentManager.beginTransaction()
@@ -165,7 +171,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
         public void bind(Post post) {
             ParseFile imageFile = post.getImage();
             if (imageFile != null) {
-                Glide.with(context)
+                Glide.with(fragment.getActivity())
                         .load(imageFile.getUrl())
                         .fitCenter()
                         .into(binding.ivPhoto);

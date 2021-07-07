@@ -66,7 +66,7 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         posts = new ArrayList<>();
-        adapter = new PostsAdapter(getActivity(), posts, false);
+        adapter = new PostsAdapter(this, posts, false);
 
         binding.rvPosts.setAdapter(adapter);
         binding.rvPosts.setLayoutManager(new GridLayoutManager(getActivity(), 3));
