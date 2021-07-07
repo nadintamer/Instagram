@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Instagram</string>
     <string name="logout_label">Log out</string>
+    <string name="feed">Feed</string>
+    <string name="capturePhoto">Capture</string>
+    <string name="profile">Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
