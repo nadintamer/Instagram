@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
@@ -14,30 +14,32 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.instagram.adapters.PostsAdapter;
-import com.example.instagram.databinding.FragmentFeedBinding;
+import com.example.instagram.databinding.FragmentProfileBinding;
 import com.example.instagram.models.Post;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeedFragment extends Fragment {
+public class ProfileFragment extends Fragment {
 
     private static final String TAG = "FeedFragment";
-    private FragmentFeedBinding binding;
+    private FragmentProfileBinding binding;
     private List<Post> posts;
     private PostsAdapter adapter;
+    private ParseUser user;
 
-    public FeedFragment() {
+    public ProfileFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentFeedBinding.inflate(inflater);
+        binding = FragmentProfileBinding.inflate(inflater);
         View view = binding.getRoot();
         return view;
     }
@@ -47,10 +49,13 @@ public class FeedFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         posts = new ArrayList<>();
-        adapter = new PostsAdapter(getActivity(), posts, true);
+        adapter = new PostsAdapter(getActivity(), posts, false);
+        user = ParseUser.getCurrentUser();
 
         binding.rvPosts.setAdapter(adapter);
-        binding.rvPosts.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.rvPosts.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+
+        binding.tvUsername.setText(user.getUsername());
 
         // Setup refresh listener which triggers new data loading
         binding.swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

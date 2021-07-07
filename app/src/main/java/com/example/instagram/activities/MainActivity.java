@@ -14,6 +14,7 @@ import com.example.instagram.R;
 import com.example.instagram.databinding.ActivityMainBinding;
 import com.example.instagram.fragments.FeedFragment;
 import com.example.instagram.fragments.NewPostFragment;
+import com.example.instagram.fragments.ProfileFragment;
 import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final Fragment feedFragment = new FeedFragment();
         final Fragment newPostFragment = new NewPostFragment();
+        final Fragment profileFragment = new ProfileFragment();
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
             Fragment fragment;
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.action_profile:
                 default:
-                    fragment = feedFragment;
+                    fragment = profileFragment;
                     break;
             }
             fragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
