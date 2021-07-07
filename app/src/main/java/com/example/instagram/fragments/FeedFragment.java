@@ -1,4 +1,4 @@
-package com.example.instagram.activities;
+package com.example.instagram.fragments;
 
 import android.os.Bundle;
 

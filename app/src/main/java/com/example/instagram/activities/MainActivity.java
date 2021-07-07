@@ -12,6 +12,8 @@ import android.view.View;
 
 import com.example.instagram.R;
 import com.example.instagram.databinding.ActivityMainBinding;
+import com.example.instagram.fragments.FeedFragment;
+import com.example.instagram.fragments.NewPostFragment;
 import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
