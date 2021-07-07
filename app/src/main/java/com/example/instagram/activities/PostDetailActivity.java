@@ -29,6 +29,11 @@ public class PostDetailActivity extends AppCompatActivity {
         binding.tvUsername.setText(post.getUser().getUsername());
         binding.tvDescription.setText(post.getDescription());
         binding.tvTimestamp.setText(Utils.calculateTimeAgo(post.getCreatedAt()));
+
+        int numLikes = post.getNumLikes();
+        String strToFormat =  numLikes != 1 ? "%d likes" : "%d like";
+        binding.tvLikes.setText(String.format(strToFormat, numLikes));
+
         ParseFile imageFile = post.getImage();
         if (imageFile != null) {
             Glide.with(this)
