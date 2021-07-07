@@ -1,15 +1,23 @@
 package com.example.instagram.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Context;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
+import com.example.instagram.R;
 import com.example.instagram.adapters.PostsAdapter;
 import com.example.instagram.databinding.ActivityFeedBinding;
+import com.example.instagram.databinding.FragmentFeedBinding;
 import com.example.instagram.models.Post;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -18,26 +26,35 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeedActivity extends AppCompatActivity {
+public class FeedFragment extends Fragment {
 
-    private static final String TAG = "FeedActivity";
-    ActivityFeedBinding binding;
-    List<Post> posts;
-    PostsAdapter adapter;
+    private static final String TAG = "FeedFragment";
+    private FragmentFeedBinding binding;
+    private List<Post> posts;
+    private PostsAdapter adapter;
+
+    public FeedFragment() {
+        // Required empty public constructor
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityFeedBinding.inflate(getLayoutInflater());
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding = FragmentFeedBinding.inflate(inflater);
         View view = binding.getRoot();
-        setContentView(view);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         posts = new ArrayList<>();
-        adapter = new PostsAdapter(this, posts);
+        adapter = new PostsAdapter(getActivity(), posts);
 
         binding.rvPosts.setAdapter(adapter);
-        binding.rvPosts.setLayoutManager(new LinearLayoutManager(this));
-        
+        binding.rvPosts.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         // Setup refresh listener which triggers new data loading
         binding.swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
