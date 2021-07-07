@@ -1,6 +1,5 @@
 package com.example.instagram.activities;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,9 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.instagram.R;
 import com.example.instagram.adapters.PostsAdapter;
-import com.example.instagram.databinding.ActivityFeedBinding;
 import com.example.instagram.databinding.FragmentFeedBinding;
 import com.example.instagram.models.Post;
 import com.parse.FindCallback;
