@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final Fragment feedFragment = new FeedFragment();
         final Fragment newPostFragment = new NewPostFragment();
-        final Fragment profileFragment = new ProfileFragment();
+        final Fragment profileFragment = ProfileFragment.newInstance(ParseUser.getCurrentUser());
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
             Fragment fragment;

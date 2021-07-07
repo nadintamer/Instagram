@@ -2,19 +2,29 @@ package com.example.instagram.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.instagram.R;
 import com.example.instagram.activities.PostDetailActivity;
 import com.example.instagram.databinding.ItemPostGridBinding;
 import com.example.instagram.databinding.ItemPostFeedBinding;
+import com.example.instagram.fragments.ProfileFragment;
 import com.example.instagram.models.Post;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -22,6 +32,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
 
     private static final int POST_FEED = 123;
     private static final int POST_GRID = 321;
+    private static final String TAG = "PostsAdapter";
 
     Context context;
     List<Post> posts;
@@ -117,6 +128,27 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
                         .fitCenter()
                         .into(binding.ivPhoto);
             }
+
+            binding.tvUsername.setOnClickListener(v -> {
+                ParseQuery<ParseUser> query = ParseUser.getQuery();
+                String username = binding.tvUsername.getText().toString();
+                query.whereEqualTo("username", username); // find adults
+                query.findInBackground(new FindCallback<ParseUser>() {
+                    public void done(List<ParseUser> objects, ParseException e) {
+                        if (e != null) {
+                            Log.e(TAG, "Error querying user", e);
+                            return;
+                        }
+                        final FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+                        final Fragment profileFragment = ProfileFragment.newInstance(objects.get(0));
+
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.fragmentContainer, profileFragment)
+                                .addToBackStack("")
+                                .commit();
+                    }
+                });
+            });
         }
     }
 

@@ -17,9 +17,12 @@ import com.example.instagram.adapters.PostsAdapter;
 import com.example.instagram.databinding.FragmentProfileBinding;
 import com.example.instagram.models.Post;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +39,20 @@ public class ProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public static ProfileFragment newInstance(ParseUser user) {
+        ProfileFragment fragment = new ProfileFragment();
+        Bundle args = new Bundle();
+        args.putParcelable("user", Parcels.wrap(user));
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        user = Parcels.unwrap(getArguments().getParcelable("user"));
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,7 +67,6 @@ public class ProfileFragment extends Fragment {
 
         posts = new ArrayList<>();
         adapter = new PostsAdapter(getActivity(), posts, false);
-        user = ParseUser.getCurrentUser();
 
         binding.rvPosts.setAdapter(adapter);
         binding.rvPosts.setLayoutManager(new GridLayoutManager(getActivity(), 3));
@@ -77,7 +93,7 @@ public class ProfileFragment extends Fragment {
         // specify what type of data we want to query - Post.class
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // get only currently logged in user's posts
-        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.whereEqualTo("user", user);
         // include data referred by user key
         query.include(Post.KEY_USER);
         // limit query to latest 20 items
