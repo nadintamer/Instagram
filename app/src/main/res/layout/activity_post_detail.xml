@@ -26,13 +26,24 @@
         android:layout_below="@id/tvUsername"
         tools:srcCompat="@tools:sample/avatars" />
 
+    <ImageButton
+        android:id="@+id/ibLike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivPhoto"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@null"
+        app:tint="@color/black"
+        app:srcCompat="@drawable/ufi_heart_icon" />
+
     <TextView
         android:id="@+id/tvLikes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ivPhoto"
+        android:layout_below="@id/ibLike"
         android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
+        android:layout_alignStart="@id/ibLike"
         android:textColor="@color/black"
         android:textStyle="bold"
         tools:text="23 likes" />
@@ -43,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tvLikes"
         android:layout_marginTop="3dp"
-        android:layout_marginLeft="10dp"
+        android:layout_alignStart="@id/tvLikes"
         android:textColor="@color/black"
         tools:text="Hello world! This is a caption" />
 
@@ -53,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tvDescription"
         android:layout_marginTop="2dp"
-        android:layout_marginLeft="10dp"
+        android:layout_alignStart="@id/tvDescription"
         android:textSize="12sp"
         tools:text="16 minutes ago" />
 </RelativeLayout>
