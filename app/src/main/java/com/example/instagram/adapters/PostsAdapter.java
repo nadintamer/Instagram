@@ -125,7 +125,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
         }
 
         public void bind(Post post) {
-            binding.tvUsername.setText(post.getUser().getUsername());
+            binding.tvUsernameTop.setText(post.getUser().getUsername());
+            binding.tvUsernameBottom.setText(post.getUser().getUsername());
+
+            binding.tvUsernameTop.setOnClickListener(v -> goToUserProfile());
+            binding.tvUsernameBottom.setOnClickListener(v -> goToUserProfile());
+            binding.ivProfilePhoto.setOnClickListener(v -> goToUserProfile());
+
             binding.tvDescription.setText(post.getDescription());
             ParseFile imageFile = post.getImage();
             if (imageFile != null) {
@@ -135,25 +141,33 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
                         .into(binding.ivPhoto);
             }
 
-            binding.tvUsername.setOnClickListener(v -> {
-                ParseQuery<ParseUser> query = ParseUser.getQuery();
-                String username = binding.tvUsername.getText().toString();
-                query.whereEqualTo("username", username); // find adults
-                query.findInBackground(new FindCallback<ParseUser>() {
-                    public void done(List<ParseUser> objects, ParseException e) {
-                        if (e != null) {
-                            Log.e(TAG, "Error querying user", e);
-                            return;
-                        }
-                        final FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-                        final Fragment profileFragment = ProfileFragment.newInstance(objects.get(0));
+            ParseFile profilePhoto = post.getUser().getParseFile("profilePhoto");
+            if (profilePhoto != null) {
+                Glide.with(fragment.getActivity())
+                        .load(profilePhoto.getUrl())
+                        .circleCrop()
+                        .into(binding.ivProfilePhoto);
+            }
+        }
 
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.fragmentContainer, profileFragment)
-                                .addToBackStack("")
-                                .commit();
+        private void goToUserProfile() {
+            ParseQuery<ParseUser> query = ParseUser.getQuery();
+            String username = binding.tvUsernameTop.getText().toString();
+            query.whereEqualTo("username", username); // find adults
+            query.findInBackground(new FindCallback<ParseUser>() {
+                public void done(List<ParseUser> objects, ParseException e) {
+                    if (e != null) {
+                        Log.e(TAG, "Error querying user", e);
+                        return;
                     }
-                });
+                    final FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
+                    final Fragment profileFragment = ProfileFragment.newInstance(objects.get(0));
+
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainer, profileFragment)
+                            .addToBackStack("")
+                            .commit();
+                }
             });
         }
     }
