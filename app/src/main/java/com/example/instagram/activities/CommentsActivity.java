@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.instagram.R;
 import com.example.instagram.adapters.CommentsAdapter;
 import com.example.instagram.databinding.ActivityCommentsBinding;
 import com.example.instagram.models.Comment;
@@ -37,6 +38,12 @@ public class CommentsActivity extends AppCompatActivity {
         binding = ActivityCommentsBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        // set up toolbar
+        setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setTitle("Comments");
+        binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        binding.toolbar.setNavigationOnClickListener(view1 -> onBackPressed());
 
         post = Parcels.unwrap(getIntent().getParcelableExtra("post"));
 

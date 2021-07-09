@@ -24,9 +24,14 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.example.instagram.R;
 import com.example.instagram.databinding.FragmentNewPostBinding;
+import com.example.instagram.models.Comment;
 import com.example.instagram.models.Post;
 import com.example.instagram.utilities.BitmapScaler;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationMenu;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -165,6 +170,14 @@ public class NewPostFragment extends Fragment {
         post.setImage(new ParseFile(photoFile));
         post.setUser(currentUser);
         post.setComments(new ArrayList<>());
+
+        // add caption as comment
+        Comment comment = new Comment();
+        comment.setContent(post.getDescription());
+        comment.setUser(post.getUser());
+        comment.setPost(post);
+        post.addComment(comment);
+
         post.setLikers(new ArrayList<>());
         post.saveInBackground(new SaveCallback() {
             @Override
@@ -174,10 +187,14 @@ public class NewPostFragment extends Fragment {
                     Toast.makeText(getActivity(), "Error while saving post!", Toast.LENGTH_SHORT).show();
                 }
                 Log.i(TAG, "Post save successful!");
+
                 binding.etDescription.setText("");
                 binding.etDescription.clearFocus();
                 hideKeyboard();
+
                 binding.ivPhoto.setImageResource(0);
+                BottomNavigationView bottomNavigation = getActivity().findViewById(R.id.bottom_navigation);
+                bottomNavigation.setSelectedItemId(R.id.action_home);
             }
         });
     }

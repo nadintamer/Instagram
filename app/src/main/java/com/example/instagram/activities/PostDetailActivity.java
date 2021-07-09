@@ -37,12 +37,23 @@ public class PostDetailActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        // set up toolbar
+        setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setTitle("");
+        binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        binding.toolbar.setNavigationOnClickListener(view1 -> onBackPressed());
+
         post = getIntent().getParcelableExtra("post");
         position = getIntent().getExtras().getInt("position");
 
         binding.tvUsername.setText(post.getUser().getUsername());
         binding.tvDescription.setText(post.getDescription());
         binding.tvTimestamp.setText(Utils.calculateTimeAgo(post.getCreatedAt(), false));
+
+        Glide.with(this)
+                .load(post.getUser().getParseFile("profilePhoto").getUrl())
+                .circleCrop()
+                .into(binding.ivProfilePhoto);
 
         ParseFile imageFile = post.getImage();
         if (imageFile != null) {
