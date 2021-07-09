@@ -87,6 +87,16 @@ public class CommentsActivity extends AppCompatActivity {
                     return;
                 }
 
+                // first time fetching comments, add caption
+                if (comments.isEmpty()) {
+                    Comment comment = new Comment();
+                    comment.setContent(post.getDescription());
+                    comment.setUser(post.getUser());
+                    comment.setPost(post);
+                    post.addComment(comment);
+                    comments.add(comment);
+                }
+
                 // save received posts to list and notify adapter of new data
                 adapter.clear();
                 adapter.addAll(comments);
