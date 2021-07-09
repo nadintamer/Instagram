@@ -1,6 +1,7 @@
 package com.example.instagram.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,13 +9,20 @@ import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.example.instagram.R;
+import com.example.instagram.adapters.CommentsAdapter;
 import com.example.instagram.databinding.ActivityPostDetailBinding;
 import com.example.instagram.fragments.FeedFragment;
+import com.example.instagram.models.Comment;
 import com.example.instagram.models.Post;
 import com.example.instagram.utilities.Utils;
 import com.parse.Parse;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
+
+import org.parceler.Parcels;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PostDetailActivity extends AppCompatActivity {
 
@@ -63,6 +71,15 @@ public class PostDetailActivity extends AppCompatActivity {
                 setLikesLabel();
             }
         });
+
+        binding.ibComment.setOnClickListener(v -> goCommentsActivity());
+        binding.tvViewComments.setOnClickListener(v -> goCommentsActivity());
+    }
+
+    private void goCommentsActivity() {
+        Intent i = new Intent(this, CommentsActivity.class);
+        i.putExtra("post", Parcels.wrap(post));
+        startActivity(i);
     }
 
     private void setLikesLabel() {

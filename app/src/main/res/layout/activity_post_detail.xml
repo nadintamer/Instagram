@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="5dp"
         android:textColor="@color/black"
         android:textStyle="bold"
@@ -37,6 +37,18 @@
         app:tint="@color/black"
         app:srcCompat="@drawable/ufi_heart_icon" />
 
+    <ImageButton
+        android:id="@+id/ibComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivPhoto"
+        android:layout_toEndOf="@id/ibLike"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@null"
+        app:tint="@color/black"
+        app:srcCompat="@drawable/ufi_comment" />
+
     <TextView
         android:id="@+id/tvLikes"
         android:layout_width="wrap_content"
@@ -59,12 +71,22 @@
         tools:text="Hello world! This is a caption" />
 
     <TextView
-        android:id="@+id/tvTimestamp"
+        android:id="@+id/tvViewComments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvDescription"
-        android:layout_marginTop="2dp"
         android:layout_alignStart="@id/tvDescription"
+        android:text="View all comments" />
+
+    <TextView
+        android:id="@+id/tvTimestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvViewComments"
+        android:layout_marginTop="2dp"
+        android:layout_alignStart="@id/tvViewComments"
         android:textSize="12sp"
         tools:text="16 minutes ago" />
+
+
 </RelativeLayout>

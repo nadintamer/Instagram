@@ -1,14 +1,9 @@
 package com.example.instagram.models;
 
-import android.util.Log;
-
-import com.parse.Parse;
 import com.parse.ParseClassName;
-import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -76,16 +71,17 @@ public class Post extends ParseObject {
         return likers.contains(user.getObjectId());
     }
 
-    public List<String> getComments() {
+    public List<Comment> getComments() {
         return getList(KEY_COMMENTS);
     }
 
-    public void setComments(List<String> comments) {
+    public void setComments(List<Comment> comments) {
         put(KEY_COMMENTS, comments);
+        saveInBackground();
     }
 
-    public void addComment(String comment) {
-        List<String> comments = getComments();
+    public void addComment(Comment comment) {
+        List<Comment> comments = getComments();
         comments.add(comment);
         setComments(comments);
     }
