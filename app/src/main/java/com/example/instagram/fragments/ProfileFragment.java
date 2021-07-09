@@ -92,7 +92,6 @@ public class ProfileFragment extends Fragment {
             binding.ivProfilePhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Editing profile photo!", Toast.LENGTH_SHORT).show();
                     onPickPhoto();
                 }
             });

@@ -59,13 +59,12 @@ public class LoginActivity extends AppCompatActivity {
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
                 if (e != null) {
-                    // TODO: have better error handling to explain issue with login
                     Log.e(TAG, "Error with sign up", e);
+                    Toast.makeText(LoginActivity.this, "Error with signup!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 goMainActivity();
-                Toast.makeText(LoginActivity.this, "Sign up successful!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -75,13 +74,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void done(ParseUser user, ParseException e) {
                 if (e != null) {
-                    // TODO: have better error handling to explain issue with login
                     Log.e(TAG, "Error with login", e);
+                    Toast.makeText(LoginActivity.this, "Incorrect username or password!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 goMainActivity();
-                Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
             }
         });
     }
