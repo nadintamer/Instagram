@@ -41,6 +41,7 @@ The following **additional** features are implemented:
 
 - [X] User can post a photo by uploading from their gallery
 - [X] User can like and comment on posts from main feed
+- [X] User can search for users by username
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
