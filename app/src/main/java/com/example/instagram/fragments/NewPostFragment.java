@@ -165,6 +165,7 @@ public class NewPostFragment extends Fragment {
     }
 
     private void savePost(String description, ParseUser currentUser, File photoFile) {
+        binding.progressBar.setVisibility(View.VISIBLE);
         Post post = new Post();
         post.setDescription(description);
         post.setImage(new ParseFile(photoFile));
@@ -191,6 +192,8 @@ public class NewPostFragment extends Fragment {
                 binding.etDescription.clearFocus();
 
                 binding.ivPhoto.setImageResource(0);
+                binding.progressBar.setVisibility(View.INVISIBLE);
+
                 BottomNavigationView bottomNavigation = getActivity().findViewById(R.id.bottom_navigation);
                 bottomNavigation.setSelectedItemId(R.id.action_home);
             }

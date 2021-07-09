@@ -39,6 +39,16 @@
         android:background="@color/light_gray"
         tools:srcCompat="@tools:sample/avatars" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="invisible"
+        android:layout_alignTop="@id/ivPhoto"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="130dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/light_gray" />
+
     <EditText
         android:id="@+id/etDescription"
         android:layout_width="match_parent"
