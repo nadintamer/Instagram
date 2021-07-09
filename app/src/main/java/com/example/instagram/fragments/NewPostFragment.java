@@ -1,48 +1,51 @@
 package com.example.instagram.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.example.instagram.R;
-import com.example.instagram.databinding.ActivityMainBinding;
 import com.example.instagram.databinding.FragmentNewPostBinding;
 import com.example.instagram.models.Post;
 import com.example.instagram.utilities.BitmapScaler;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
 
 public class NewPostFragment extends Fragment {
 
     private static final String TAG = "NewPostFragment";
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 42;
+    public static final int CHOOSE_IMAGE_ACTIVITY_REQUEST_CODE = 43;
     public static final int MAX_IMAGE_WIDTH = 300;
 
     private FragmentNewPostBinding binding;
@@ -84,12 +87,8 @@ public class NewPostFragment extends Fragment {
             }
         });
 
-        binding.btnTakePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                launchCamera();
-            }
-        });
+        binding.btnTakePhoto.setOnClickListener(v -> launchCamera());
+        binding.btnChoosePhoto.setOnClickListener(v -> launchGallery());
     }
 
     private void launchCamera() {
@@ -129,11 +128,44 @@ public class NewPostFragment extends Fragment {
         return file;
     }
 
+    private void launchGallery() {
+        // Create intent for picking a photo from the gallery
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
+        // So as long as the result is not null, it's safe to use the intent.
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            // Bring up gallery to select a photo
+            startActivityForResult(intent, CHOOSE_IMAGE_ACTIVITY_REQUEST_CODE);
+        }
+    }
+
+    private Bitmap loadFromUri(Uri photoUri) {
+        Bitmap image = null;
+        try {
+            // check version of Android on device
+            if (Build.VERSION.SDK_INT > 27){
+                // on newer versions of Android, use the new decodeBitmap method
+                ImageDecoder.Source source = ImageDecoder.createSource(getActivity().getContentResolver(), photoUri);
+                image = ImageDecoder.decodeBitmap(source);
+            } else {
+                // support older versions of Android by using getBitmap
+                image = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), photoUri);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
+
     private void savePost(String description, ParseUser currentUser, File photoFile) {
         Post post = new Post();
         post.setDescription(description);
         post.setImage(new ParseFile(photoFile));
         post.setUser(currentUser);
+        post.setComments(new ArrayList<>());
+        post.setLikers(new ArrayList<>());
         post.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -143,6 +175,8 @@ public class NewPostFragment extends Fragment {
                 }
                 Log.i(TAG, "Post save successful!");
                 binding.etDescription.setText("");
+                binding.etDescription.clearFocus();
+                hideKeyboard();
                 binding.ivPhoto.setImageResource(0);
             }
         });
@@ -179,6 +213,38 @@ public class NewPostFragment extends Fragment {
             } else { // Result was a failure
                 Toast.makeText(getActivity(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
+        } else if (requestCode == CHOOSE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Uri photoUri = data.getData();
+
+                // Load the image located at photoUri into selectedImage
+                Bitmap selectedImage = loadFromUri(photoUri);
+                photoFile = getPhotoFileFromBitmap(selectedImage);
+                binding.ivPhoto.setImageBitmap(selectedImage);
+            } else {
+                Toast.makeText(getActivity(), "Picture wasn't selected!", Toast.LENGTH_SHORT).show();
+            }
         }
+    }
+
+    public File getPhotoFileFromBitmap(Bitmap map) {
+        File file = getPhotoFileUri(photoFileName);
+        OutputStream os = null;
+        try {
+            os = new BufferedOutputStream(new FileOutputStream(file));
+            map.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            os.close();
+            return file;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(binding.etDescription.getWindowToken(), 0);
     }
 }

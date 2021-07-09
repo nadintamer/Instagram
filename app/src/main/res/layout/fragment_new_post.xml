@@ -5,33 +5,50 @@
     android:layout_height="match_parent"
     tools:context=".fragments.NewPostFragment">
 
-    <EditText
-        android:id="@+id/etDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="Write a caption..." />
-
-    <Button
+    <ImageButton
         android:id="@+id/btnTakePhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/etDescription"
-        android:text="Take a photo" />
+        android:layout_toStartOf="@id/btnChoosePhoto"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:background="@drawable/roundcorner"
+        android:src="@drawable/ic_camera" />
+
+    <ImageButton
+        android:id="@+id/btnChoosePhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/btnTakePhoto"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="20dp"
+        android:padding="10dp"
+        android:background="@drawable/roundcorner"
+        android:src="@drawable/ic_gallery" />
 
     <ImageView
         android:id="@+id/ivPhoto"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="300dp"
         android:layout_below="@id/btnTakePhoto"
         android:scaleType="centerCrop"
-        android:layout_marginTop="30dp"
+        android:adjustViewBounds="true"
+        android:layout_marginTop="10dp"
         android:layout_marginHorizontal="20dp"
+        android:background="@color/light_gray"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <EditText
+        android:id="@+id/etDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivPhoto"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/transparent"
+        android:ems="10"
+        android:hint="Write a caption..." />
 
     <Button
         android:id="@+id/btnSubmit"
@@ -39,8 +56,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginHorizontal="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/ivPhoto"
-        android:text="Submit" />
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/etDescription"
+        android:minHeight="0dp"
+        android:background="@android:color/transparent"
+        android:textColor="@color/light_blue"
+        android:textAllCaps="false"
+        android:textSize="15dp"
+        android:text="Post" />
 
 </RelativeLayout>

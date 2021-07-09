@@ -43,7 +43,7 @@ import java.util.List;
 public class ProfileFragment extends Fragment {
 
     private static final String TAG = "FeedFragment";
-    private static final int PICK_PHOTO_CODE = 42;
+    private static final int PICK_PHOTO_CODE = 1034;
     private FragmentProfileBinding binding;
     private List<Post> posts;
     private PostsAdapter adapter;

@@ -21,8 +21,9 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/ivProfilePhoto"
         android:layout_toEndOf="@id/ivProfilePhoto"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="3dp"
         android:textStyle="bold"
+        android:textColor="@color/black"
         tools:text="nadouttahere" />
 
     <ImageView
@@ -42,6 +43,7 @@
         android:layout_below="@id/ivPhoto"
         android:layout_marginStart="10dp"
         android:textStyle="bold"
+        android:textColor="@color/black"
         tools:text="nadouttahere" />
 
     <TextView
@@ -52,6 +54,7 @@
         android:layout_toEndOf="@id/tvUsernameBottom"
         android:layout_marginHorizontal="5dp"
         android:layout_marginBottom="15dp"
+        android:textColor="@color/black"
         tools:text="baby penguins!" />
 
     <TextView
