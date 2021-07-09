@@ -39,9 +39,8 @@
     <ImageView
         android:id="@+id/ivPhoto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
+        android:layout_height="300dp"
+        android:scaleType="centerCrop"
         android:layout_below="@id/ivProfilePhoto"
         android:layout_marginTop="10dp"
         tools:srcCompat="@tools:sample/avatars" />
