@@ -15,6 +15,7 @@ import com.example.instagram.databinding.ActivityMainBinding;
 import com.example.instagram.fragments.FeedFragment;
 import com.example.instagram.fragments.NewPostFragment;
 import com.example.instagram.fragments.ProfileFragment;
+import com.example.instagram.fragments.SearchFragment;
 import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final Fragment feedFragment = new FeedFragment();
+        final Fragment searchFragment = new SearchFragment();
         final Fragment newPostFragment = new NewPostFragment();
         final Fragment profileFragment = ProfileFragment.newInstance(ParseUser.getCurrentUser());
 
@@ -42,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.action_home:
                     fragment = feedFragment;
+                    break;
+                case R.id.action_search:
+                    fragment = searchFragment;
                     break;
                 case R.id.action_capture:
                     fragment = newPostFragment;
