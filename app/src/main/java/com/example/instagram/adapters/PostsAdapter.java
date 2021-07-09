@@ -20,6 +20,7 @@ import com.example.instagram.databinding.ItemPostGridBinding;
 import com.example.instagram.databinding.ItemPostFeedBinding;
 import com.example.instagram.fragments.ProfileFragment;
 import com.example.instagram.models.Post;
+import com.example.instagram.utilities.Utils;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -127,6 +128,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
         public void bind(Post post) {
             binding.tvUsernameTop.setText(post.getUser().getUsername());
             binding.tvUsernameBottom.setText(post.getUser().getUsername());
+            binding.tvTimestamp.setText(Utils.calculateTimeAgo(post.getCreatedAt()));
 
             binding.tvUsernameTop.setOnClickListener(v -> goToUserProfile());
             binding.tvUsernameBottom.setOnClickListener(v -> goToUserProfile());
