@@ -12,13 +12,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.instagram.adapters.PostsAdapter;
 import com.example.instagram.databinding.FragmentProfileBinding;
 import com.example.instagram.models.Post;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -72,6 +75,23 @@ public class ProfileFragment extends Fragment {
         binding.rvPosts.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
         binding.tvUsername.setText(user.getUsername());
+
+        ParseFile imageFile = user.getParseFile("profilePhoto");
+        if (imageFile != null) {
+            Glide.with(getActivity())
+                    .load(imageFile.getUrl())
+                    .circleCrop()
+                    .into(binding.ivProfilePhoto);
+        }
+
+        if (user == ParseUser.getCurrentUser()) {
+            binding.ivProfilePhoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "Editing profile photo!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
         // Setup refresh listener which triggers new data loading
         binding.swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

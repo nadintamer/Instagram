@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.ProfileFragment">
 
+    <ImageView
+        android:id="@+id/ivProfilePhoto"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        tools:src="@tools:sample/avatars" />
+
     <TextView
         android:id="@+id/tvUsername"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_below="@id/ivProfilePhoto"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:textColor="@color/black"
+        android:textSize="20dp"
         android:textStyle="bold"
         tools:text="nadintamer" />
 
@@ -26,5 +39,4 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
 </RelativeLayout>
