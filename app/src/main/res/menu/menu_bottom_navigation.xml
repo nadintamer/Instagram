@@ -4,19 +4,25 @@
     <item
         android:id="@+id/action_home"
         android:enabled="true"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/home_icon"
         android:title="@string/feed"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_search"
+        android:enabled="true"
+        android:icon="@drawable/search_icon"
+        android:title="@string/capturePhoto"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_capture"
         android:enabled="true"
-        android:icon="@drawable/ic_add"
+        android:icon="@drawable/plus_icon"
         android:title="@string/capturePhoto"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_profile"
         android:enabled="true"
-        android:icon="@drawable/ic_profile"
+        android:icon="@drawable/profile_icon"
         android:title="@string/profile"
         app:showAsAction="ifRoom" />
 </menu>

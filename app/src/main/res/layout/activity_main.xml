@@ -33,6 +33,7 @@
         android:layout_weight="0"
         app:labelVisibilityMode="unlabeled"
         app:itemIconTint="@color/bottom_nav_color"
-        app:menu="@menu/menu_bottom_navigation" />
+        app:menu="@menu/menu_bottom_navigation"
+        app:itemIconSize="24dp" />
 
 </LinearLayout>
