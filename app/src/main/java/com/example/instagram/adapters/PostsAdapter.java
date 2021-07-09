@@ -140,6 +140,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
                 Glide.with(fragment.getActivity())
                         .load(imageFile.getUrl())
                         .fitCenter()
+                        .placeholder(R.drawable.placeholder)
                         .into(binding.ivPhoto);
             }
 

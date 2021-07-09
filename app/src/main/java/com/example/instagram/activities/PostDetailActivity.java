@@ -49,6 +49,7 @@ public class PostDetailActivity extends AppCompatActivity {
             Glide.with(this)
                     .load(imageFile.getUrl())
                     .fitCenter()
+                    .placeholder(R.drawable.placeholder)
                     .into(binding.ivPhoto);
         }
 
