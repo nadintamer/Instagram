@@ -36,11 +36,44 @@
         android:adjustViewBounds="true"
         tools:srcCompat="@tools:sample/avatars" />
 
+    <ImageButton
+        android:id="@+id/ibLike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivPhoto"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="@null"
+        app:tint="@color/black"
+        app:srcCompat="@drawable/ufi_heart_icon" />
+
+    <ImageButton
+        android:id="@+id/ibComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivPhoto"
+        android:layout_toEndOf="@id/ibLike"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="@null"
+        app:tint="@color/black"
+        app:srcCompat="@drawable/ufi_comment" />
+
+    <TextView
+        android:id="@+id/tvLikes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ibLike"
+        android:layout_marginStart="10dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        tools:text="145 likes" />
+
     <TextView
         android:id="@+id/tvUsernameBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ivPhoto"
+        android:layout_below="@id/tvLikes"
         android:layout_marginStart="10dp"
         android:textStyle="bold"
         android:textColor="@color/black"
@@ -50,7 +83,7 @@
         android:id="@+id/tvDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ivPhoto"
+        android:layout_alignTop="@id/tvUsernameBottom"
         android:layout_toEndOf="@id/tvUsernameBottom"
         android:layout_marginHorizontal="5dp"
         android:layout_marginBottom="15dp"
@@ -58,11 +91,19 @@
         tools:text="baby penguins!" />
 
     <TextView
-        android:id="@+id/tvTimestamp"
+        android:id="@+id/tvViewComments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvUsernameBottom"
         android:layout_alignStart="@id/tvUsernameBottom"
+        android:text="View all comments" />
+
+    <TextView
+        android:id="@+id/tvTimestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvViewComments"
+        android:layout_alignStart="@id/tvViewComments"
         android:layout_marginBottom="15dp"
         android:textSize="12dp"
         tools:text="16 minutes ago" />

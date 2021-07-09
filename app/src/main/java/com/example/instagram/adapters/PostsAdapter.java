@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.instagram.R;
+import com.example.instagram.activities.CommentsActivity;
 import com.example.instagram.activities.PostDetailActivity;
 import com.example.instagram.databinding.ItemPostGridBinding;
 import com.example.instagram.databinding.ItemPostFeedBinding;
@@ -26,6 +27,8 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -151,6 +154,41 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
                         .circleCrop()
                         .into(binding.ivProfilePhoto);
             }
+
+            setLikesLabel(post);
+
+            Boolean isLiked = post.isLikedBy(ParseUser.getCurrentUser());
+            binding.ibLike.setSelected(isLiked);
+
+            binding.ibLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    binding.ibLike.setSelected(!binding.ibLike.isSelected());
+
+                    if (binding.ibLike.isSelected()) {
+                        post.addLike(ParseUser.getCurrentUser());
+                    } else {
+                        post.removeLike(ParseUser.getCurrentUser());
+                    }
+
+                    setLikesLabel(post);
+                }
+            });
+
+            binding.ibComment.setOnClickListener(v -> goCommentsActivity(post));
+            binding.tvViewComments.setOnClickListener(v -> goCommentsActivity(post));
+        }
+
+        private void goCommentsActivity(Post post) {
+            Intent i = new Intent(fragment.getActivity(), CommentsActivity.class);
+            i.putExtra("post", Parcels.wrap(post));
+            fragment.startActivity(i);
+        }
+
+        private void setLikesLabel(Post post) {
+            int numLikes = post.getNumLikes();
+            String strToFormat =  numLikes != 1 ? "%d likes" : "%d like";
+            binding.tvLikes.setText(String.format(strToFormat, numLikes));
         }
 
         private void goToUserProfile() {
