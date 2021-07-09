@@ -170,14 +170,6 @@ public class NewPostFragment extends Fragment {
         post.setImage(new ParseFile(photoFile));
         post.setUser(currentUser);
         post.setComments(new ArrayList<>());
-
-        // add caption as comment
-        Comment comment = new Comment();
-        comment.setContent(post.getDescription());
-        comment.setUser(post.getUser());
-        comment.setPost(post);
-        post.addComment(comment);
-
         post.setLikers(new ArrayList<>());
         post.saveInBackground(new SaveCallback() {
             @Override
@@ -188,9 +180,15 @@ public class NewPostFragment extends Fragment {
                 }
                 Log.i(TAG, "Post save successful!");
 
+                // add caption as comment
+                Comment comment = new Comment();
+                comment.setContent(post.getDescription());
+                comment.setUser(post.getUser());
+                comment.setPost(post);
+                post.addComment(comment);
+
                 binding.etDescription.setText("");
                 binding.etDescription.clearFocus();
-                hideKeyboard();
 
                 binding.ivPhoto.setImageResource(0);
                 BottomNavigationView bottomNavigation = getActivity().findViewById(R.id.bottom_navigation);
@@ -258,10 +256,5 @@ public class NewPostFragment extends Fragment {
             e.printStackTrace();
         }
         return file;
-    }
-
-    private void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(binding.etDescription.getWindowToken(), 0);
     }
 }
