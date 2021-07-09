@@ -10,7 +10,6 @@
         android:id="@+id/ivProfilePhoto"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         tools:src="@tools:sample/avatars" />
@@ -23,7 +22,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:textColor="@color/black"
-        android:textSize="20dp"
+        android:textSize="18dp"
         android:textStyle="bold"
         tools:text="nadintamer" />
 
@@ -33,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/tvUsername"
-        android:layout_margin="10dp">
+        android:layout_marginTop="10dp">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPosts"
             android:layout_width="match_parent"
