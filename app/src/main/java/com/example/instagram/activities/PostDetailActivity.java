@@ -42,7 +42,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
         binding.tvUsername.setText(post.getUser().getUsername());
         binding.tvDescription.setText(post.getDescription());
-        binding.tvTimestamp.setText(Utils.calculateTimeAgo(post.getCreatedAt()));
+        binding.tvTimestamp.setText(Utils.calculateTimeAgo(post.getCreatedAt(), false));
 
         ParseFile imageFile = post.getImage();
         if (imageFile != null) {

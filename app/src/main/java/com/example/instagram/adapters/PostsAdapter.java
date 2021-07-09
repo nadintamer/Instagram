@@ -131,7 +131,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
         public void bind(Post post) {
             binding.tvUsernameTop.setText(post.getUser().getUsername());
             binding.tvUsernameBottom.setText(post.getUser().getUsername());
-            binding.tvTimestamp.setText(Utils.calculateTimeAgo(post.getCreatedAt()));
+            binding.tvTimestamp.setText(Utils.calculateTimeAgo(post.getCreatedAt(), false));
 
             binding.tvUsernameTop.setOnClickListener(v -> goToUserProfile());
             binding.tvUsernameBottom.setOnClickListener(v -> goToUserProfile());

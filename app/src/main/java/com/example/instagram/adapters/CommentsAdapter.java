@@ -8,9 +8,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.instagram.databinding.ItemCommentBinding;
 import com.example.instagram.models.Comment;
 import com.example.instagram.models.Post;
+import com.example.instagram.utilities.Utils;
 import com.parse.ParseException;
 
 import java.util.List;
@@ -65,6 +67,11 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         public void bind(Comment comment) {
             binding.tvUsername.setText(comment.getUser().getUsername());
             binding.tvComment.setText(comment.getContent());
+            binding.tvTimestamp.setText(Utils.calculateTimeAgo(comment.getCreatedAt(), true));
+            Glide.with(context)
+                    .load(comment.getUser().getParseFile("profilePhoto").getUrl())
+                    .circleCrop()
+                    .into(binding.ivProfilePhoto);
         }
     }
 }

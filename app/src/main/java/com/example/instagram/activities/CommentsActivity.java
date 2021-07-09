@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.instagram.adapters.CommentsAdapter;
 import com.example.instagram.databinding.ActivityCommentsBinding;
 import com.example.instagram.models.Comment;
@@ -44,6 +45,11 @@ public class CommentsActivity extends AppCompatActivity {
 
         binding.rvComments.setAdapter(adapter);
         binding.rvComments.setLayoutManager(new LinearLayoutManager(this));
+
+        Glide.with(this)
+                .load(ParseUser.getCurrentUser().getParseFile("profilePhoto").getUrl())
+                .circleCrop()
+                .into(binding.ivProfilePhoto);
 
         binding.btnPostComment.setOnClickListener(new View.OnClickListener() {
             @Override
