@@ -2,7 +2,7 @@
 
 **Instagram** is a photo sharing app using Parse as its backend.
 
-Time spent: **X** hours spent in total
+Time spent: **17** hours spent in total
 
 ## User Stories
 
@@ -45,15 +45,14 @@ The following **additional** features are implemented:
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1.
-2.
+1. Best way to re-use repeated code across classes (e.g. launching photo gallery)
+2. Implementing location tags for posts like on the real Instagram
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-<!--<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />-->
-\<coming soon\>
+<img src='walkthrough.gif' title='Instagram GIF Walkthrough' width='' alt='Instagram GIF Walkthrough' />
 
 GIF created with [LICEcap](https://www.cockos.com/licecap/).
 
@@ -67,6 +66,8 @@ List an 3rd party libraries, icons, graphics, or other assets you used in your a
 ## Notes
 
 Describe any challenges encountered while building the app.
+
+* While implementing liking functionality, I encountered a challenging bug of likes not persisting properly. After stepping through the debugger, I was able to identify that it was caused by not keeping the local copy of the posts list in sync with the Parse database. I fixed the issue by re-querying the single post that was edited to update the local list.
 
 ## License
 
