@@ -2,6 +2,8 @@ package com.example.instagram.utilities;
 
 import android.util.Log;
 
+import com.parse.ParseUser;
+
 import java.util.Date;
 
 public class Utils {
@@ -38,5 +40,9 @@ public class Utils {
         }
 
         return "";
+    }
+
+    public static String getProfilePhotoUrl(ParseUser user) {
+        return user.getParseFile("profilePhoto").getUrl();
     }
 }

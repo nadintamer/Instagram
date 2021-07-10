@@ -36,16 +36,12 @@ public class PostDetailActivity extends AppCompatActivity {
         binding = ActivityPostDetailBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
-        // set up toolbar
-        setSupportActionBar(binding.toolbar);
-        getSupportActionBar().setTitle("");
-        binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        binding.toolbar.setNavigationOnClickListener(view1 -> onBackPressed());
+        setUpToolbar();
 
         post = getIntent().getParcelableExtra("post");
         position = getIntent().getExtras().getInt("position");
 
+        // set up relevant post information
         binding.tvUsername.setText(post.getUser().getUsername());
         binding.tvDescription.setText(post.getDescription());
         binding.tvTimestamp.setText(Utils.calculateTimeAgo(post.getCreatedAt(), false));
@@ -64,28 +60,39 @@ public class PostDetailActivity extends AppCompatActivity {
                     .into(binding.ivPhoto);
         }
 
-        setLikesLabel();
+        // set up liking + commenting
+        setLikesLabels();
+        binding.ibLike.setOnClickListener(v -> handleLikeEvent());
+        binding.ibComment.setOnClickListener(v -> goCommentsActivity());
+        binding.tvViewComments.setOnClickListener(v -> goCommentsActivity());
+    }
 
+    private void setUpToolbar() {
+        setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setTitle("");
+        binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        binding.toolbar.setNavigationOnClickListener(view1 -> onBackPressed());
+    }
+
+    private void handleLikeEvent() {
+        binding.ibLike.setSelected(!binding.ibLike.isSelected());
+        if (binding.ibLike.isSelected()) {
+            post.addLike(ParseUser.getCurrentUser());
+        } else {
+            post.removeLike(ParseUser.getCurrentUser());
+        }
+        setLikesLabels();
+    }
+
+    private void setLikesLabels() {
+        // set like button (filled or empty)
         Boolean isLiked = post.isLikedBy(ParseUser.getCurrentUser());
         binding.ibLike.setSelected(isLiked);
 
-        binding.ibLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.ibLike.setSelected(!binding.ibLike.isSelected());
-
-                if (binding.ibLike.isSelected()) {
-                    post.addLike(ParseUser.getCurrentUser());
-                } else {
-                    post.removeLike(ParseUser.getCurrentUser());
-                }
-
-                setLikesLabel();
-            }
-        });
-
-        binding.ibComment.setOnClickListener(v -> goCommentsActivity());
-        binding.tvViewComments.setOnClickListener(v -> goCommentsActivity());
+        // set likes number label
+        int numLikes = post.getNumLikes();
+        String strToFormat =  numLikes != 1 ? "%d likes" : "%d like";
+        binding.tvLikes.setText(String.format(strToFormat, numLikes));
     }
 
     private void goCommentsActivity() {
@@ -94,14 +101,9 @@ public class PostDetailActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    private void setLikesLabel() {
-        int numLikes = post.getNumLikes();
-        String strToFormat =  numLikes != 1 ? "%d likes" : "%d like";
-        binding.tvLikes.setText(String.format(strToFormat, numLikes));
-    }
-
     @Override
     public void onBackPressed() {
+        // send like & comment information back to feedFragment
         Intent i = new Intent();
         i.putExtra("postId", post.getObjectId());
         i.putExtra("position", position);

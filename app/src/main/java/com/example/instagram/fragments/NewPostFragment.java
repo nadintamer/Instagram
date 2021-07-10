@@ -186,7 +186,7 @@ public class NewPostFragment extends Fragment {
                 comment.setContent(post.getDescription());
                 comment.setUser(post.getUser());
                 comment.setPost(post);
-                post.addComment(comment);
+                post.addComment(comment, null);
 
                 binding.etDescription.setText("");
                 binding.etDescription.clearFocus();

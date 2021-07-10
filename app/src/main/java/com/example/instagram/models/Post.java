@@ -1,9 +1,12 @@
 package com.example.instagram.models;
 
+import androidx.annotation.Nullable;
+
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -77,12 +80,12 @@ public class Post extends ParseObject {
 
     public void setComments(List<Comment> comments) {
         put(KEY_COMMENTS, comments);
-        saveInBackground();
     }
 
-    public void addComment(Comment comment) {
+    public void addComment(Comment comment, SaveCallback callback) {
         List<Comment> comments = getComments();
         comments.add(comment);
         setComments(comments);
+        saveInBackground(callback);
     }
 }
