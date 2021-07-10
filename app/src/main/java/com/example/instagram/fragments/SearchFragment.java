@@ -58,9 +58,9 @@ public class SearchFragment extends Fragment {
         binding.searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Fetch the data remotely
+                // fetch users
                 searchUsers(query);
-                // Reset SearchView
+                // reset searchView
                 binding.searchBar.clearFocus();
                 binding.searchBar.setQuery("", false);
                 return true;
@@ -75,23 +75,18 @@ public class SearchFragment extends Fragment {
 
     private void searchUsers(String searchQuery) {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
+        // only get users whose username starts with the search query
         query.whereStartsWith("username", searchQuery);
-        // order posts by creation date (newest first)
         query.addDescendingOrder("createdAt");
-        // start an asynchronous call for posts
-        query.findInBackground(new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> users, ParseException e) {
-                // check for errors
-                if (e != null) {
-                    Log.e(TAG, "Issue with getting posts", e);
-                    return;
-                }
-
-                adapter.clear();
-                // save received posts to list and notify adapter of new data
-                adapter.addAll(users);
+        query.findInBackground((users, e) -> {
+            // check for errors
+            if (e != null) {
+                Log.e(TAG, "Issue with getting posts", e);
+                return;
             }
+
+            adapter.clear();
+            adapter.addAll(users);
         });
     }
 }

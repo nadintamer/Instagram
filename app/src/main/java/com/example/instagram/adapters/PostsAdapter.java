@@ -32,6 +32,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
 
     private static final int POST_FEED = 123;
     private static final int POST_GRID = 321;
+    private static final int POST_DETAIL_REQUEST_CODE = 10;
     private static final String TAG = "PostsAdapter";
 
     Fragment fragment;
@@ -111,7 +112,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
                 Intent i = new Intent(fragment.getActivity(), PostDetailActivity.class);
                 i.putExtra("post", post);
                 i.putExtra("position", position);
-                fragment.startActivityForResult(i, 10);
+                fragment.startActivityForResult(i, POST_DETAIL_REQUEST_CODE);
             }
         }
     }
