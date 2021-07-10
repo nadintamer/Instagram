@@ -33,7 +33,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
     @NonNull
     @Override
     public UsersAdapter.UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemUserBinding binding = ItemUserBinding.inflate(LayoutInflater.from(fragment.getActivity()), parent, false);
+        ItemUserBinding binding = ItemUserBinding.inflate(
+                LayoutInflater.from(fragment.getActivity()), parent, false);
         return new UsersAdapter.UserViewHolder(binding);
     }
 
@@ -78,6 +79,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
 
         @Override
         public void onClick(View v) {
+            // clicking on a username leads to user profile
             int position = getAdapterPosition();
             final FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
             final Fragment profileFragment = ProfileFragment.newInstance(users.get(position));

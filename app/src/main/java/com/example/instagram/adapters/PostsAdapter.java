@@ -1,6 +1,5 @@
 package com.example.instagram.adapters;
 
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,8 +20,6 @@ import com.example.instagram.databinding.ItemPostFeedBinding;
 import com.example.instagram.fragments.ProfileFragment;
 import com.example.instagram.models.Post;
 import com.example.instagram.utilities.Utils;
-import com.parse.FindCallback;
-import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -51,6 +47,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
     @NonNull
     @Override
     public PostsAdapter.PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // two different post types - feed or grid (on profile view)
         if (viewType == POST_FEED) {
             ItemPostFeedBinding binding = ItemPostFeedBinding.inflate(LayoutInflater.from(fragment.getActivity()), parent, false);
             return new PostFeedViewHolder(binding);
@@ -107,6 +104,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
 
         @Override
         public void onClick(View v) {
+            // clicking on a post in feed leads to post detail view
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 Post post = posts.get(position);
@@ -155,26 +153,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
                         .into(binding.ivProfilePhoto);
             }
 
-            setLikesLabel(post);
-
-            Boolean isLiked = post.isLikedBy(ParseUser.getCurrentUser());
-            binding.ibLike.setSelected(isLiked);
-
-            binding.ibLike.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    binding.ibLike.setSelected(!binding.ibLike.isSelected());
-
-                    if (binding.ibLike.isSelected()) {
-                        post.addLike(ParseUser.getCurrentUser());
-                    } else {
-                        post.removeLike(ParseUser.getCurrentUser());
-                    }
-
-                    setLikesLabel(post);
-                }
-            });
-
+            // set up liking + commenting functionality
+            setLikesLabels(post);
+            binding.ibLike.setOnClickListener(v -> handleLikeEvent(post));
             binding.ibComment.setOnClickListener(v -> goCommentsActivity(post));
             binding.tvViewComments.setOnClickListener(v -> goCommentsActivity(post));
         }
@@ -185,7 +166,20 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
             fragment.startActivity(i);
         }
 
-        private void setLikesLabel(Post post) {
+        private void handleLikeEvent(Post post) {
+            binding.ibLike.setSelected(!binding.ibLike.isSelected());
+            if (binding.ibLike.isSelected()) {
+                post.addLike(ParseUser.getCurrentUser());
+            } else {
+                post.removeLike(ParseUser.getCurrentUser());
+            }
+            setLikesLabels(post);
+        }
+
+        private void setLikesLabels(Post post) {
+            Boolean isLiked = post.isLikedBy(ParseUser.getCurrentUser());
+            binding.ibLike.setSelected(isLiked);
+
             int numLikes = post.getNumLikes();
             String strToFormat =  numLikes != 1 ? "%d likes" : "%d like";
             binding.tvLikes.setText(String.format(strToFormat, numLikes));
@@ -194,21 +188,19 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
         private void goToUserProfile() {
             ParseQuery<ParseUser> query = ParseUser.getQuery();
             String username = binding.tvUsernameTop.getText().toString();
-            query.whereEqualTo("username", username); // find adults
-            query.findInBackground(new FindCallback<ParseUser>() {
-                public void done(List<ParseUser> objects, ParseException e) {
-                    if (e != null) {
-                        Log.e(TAG, "Error querying user", e);
-                        return;
-                    }
-                    final FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
-                    final Fragment profileFragment = ProfileFragment.newInstance(objects.get(0));
-
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.fragmentContainer, profileFragment)
-                            .addToBackStack("")
-                            .commit();
+            query.whereEqualTo("username", username); // find user object with that username
+            query.findInBackground((objects, e) -> {
+                if (e != null) {
+                    Log.e(TAG, "Error querying user", e);
+                    return;
                 }
+                final FragmentManager fragmentManager = fragment.getActivity().getSupportFragmentManager();
+                final Fragment profileFragment = ProfileFragment.newInstance(objects.get(0));
+
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainer, profileFragment)
+                        .addToBackStack("")
+                        .commit();
             });
         }
     }
