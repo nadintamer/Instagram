@@ -4,6 +4,14 @@
 
 Time spent: **17** hours spent in total
 
+## Video Walkthrough
+
+Here's a walkthrough of implemented user stories:
+
+<img src='walkthrough.gif' title='Instagram GIF Walkthrough' width='' alt='Instagram GIF Walkthrough' />
+
+GIF created with [LICEcap](https://www.cockos.com/licecap/).
+
 ## User Stories
 
 The following **required** functionality is completed:
@@ -47,14 +55,6 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 1. Best way to re-use repeated code across classes (e.g. launching photo gallery)
 2. Implementing location tags for posts like on the real Instagram
-
-## Video Walkthrough
-
-Here's a walkthrough of implemented user stories:
-
-<img src='walkthrough.gif' title='Instagram GIF Walkthrough' width='' alt='Instagram GIF Walkthrough' />
-
-GIF created with [LICEcap](https://www.cockos.com/licecap/).
 
 ## Credits
 
